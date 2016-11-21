@@ -23,7 +23,7 @@ store.subscribe(function () {
   html.update(app, view)
 })
 
-// var app = document.createElement('div') // ??? why doesn't this work
+// var app = document.createElement('div') // ??? why doesn't this wor
 const app = render(initialState, store.dispatch)
 main.appendChild(app)
 
