@@ -6,26 +6,33 @@ const morphdom = require('morphdom')
 const reducer = require('./reducer')
 const sampleBeers = require('./sampleBeers')
 
-var main = document.querySelector('main')
-var app = document.createElement('div') // ??? why doesn't this work
-main.appendChild(app)
-console.log("We are getting index.js stuff")
+const Beers = require('./views/Beers')
+const Style = require('./views/Style')
 
-const initialState = {
-  beers: [
-  ]
+
+// var app = document.createElement('div') // ??? why doesn't this work
+
+const state = {
+  beers: [],
+  view: 'all',
+  styles: []
 }
 
-var store = redux.createStore(reducer, initialState)
+var store = redux.createStore(reducer, state)
+
+var main = document.querySelector('main')
+var appEl = document.createElement('div')
+main.appendChild(appEl)
+
+const app = render(state, store.dispatch)
 
 store.subscribe(function () {
   var state = store.getState()
   var view = render(state, store.dispatch)
-  html.update(app, view)
+  html.update(appEl, view)
 })
 
 // var app = document.createElement('div') // ??? why doesn't this work
-// const app = render(initialState, store.dispatch)
 
 
 // setTimeout((err, res)=>{
@@ -41,30 +48,27 @@ request
     }
     else {
       store.dispatch({type: 'RECEIVE_BEERS', payload: response.body})
-      console.log('Api working, well done!')
       // store.dispatch({type: 'TOGGLE_LOADING'})
       // console.log(store.getState())
     }
   })
 
+
+
 function render(state, dispatch) {
-  console.log('state updating', state, state.beers.length)
-  if (state.beers.length < 1) {
-    return html`<h2>Loading...</h2>`
-  } else {
-    console.log('trying')
+  if(state.view === 'all'){
     return html`
-      <div id="app">
-        ${state.beers.map((beer) => {
-          return html`
-            <div class='beer'>
-              <h2>${beer.name}</h2>
-              <h3>${beer.brewery}</h3>
-              <p>${beer.style}</p>
-            </div>
-            `
-        })}
-      </div>`
+    <div class='app'>
+    ${Beers(state, dispatch)}
+    </div>
+    `
+  }
+  else {
+    return html`
+      <div class='beerStyle'>
+        ${Style(state, dispatch)}
+      </div>
+    `
   }
 }
 
