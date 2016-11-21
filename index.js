@@ -32,14 +32,6 @@ store.subscribe(function () {
   html.update(appEl, view)
 })
 
-// var app = document.createElement('div') // ??? why doesn't this work
-
-
-// setTimeout((err, res)=>{
-//   store.dispatch({type: 'RECEIVE_BEERS', payload: sampleBeers})
-//   console.log('hello we are timeout')
-// }, 2000)
-
 request
   .get('https://rogue-beers.herokuapp.com/api/v1/beers')
   .end((error, response) => {
@@ -53,9 +45,21 @@ request
     }
   })
 
+  request
+    .get('https://rogue-beers.herokuapp.com/api/v1/styles')
+    .end((error, response) => {
+      if (error) {
+        console.log("Ahhhh error with styles", error)
+      }
+      else {
+        store.dispatch({type: 'RECEIVE_STYLES', payload: response.body})
+      }
+    })
+
 
 
 function render(state, dispatch) {
+  console.log(state, "state!!");
   if(state.view === 'all'){
     return html`
     <div class='app'>
