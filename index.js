@@ -7,7 +7,8 @@ const reducer = require('./reducer')
 const sampleBeers = require('./sampleBeers')
 
 var main = document.querySelector('main')
-
+var app = document.createElement('div') // ??? why doesn't this work
+main.appendChild(app)
 console.log("We are getting index.js stuff")
 
 const initialState = {
@@ -23,9 +24,9 @@ store.subscribe(function () {
   html.update(app, view)
 })
 
-// var app = document.createElement('div') // ??? why doesn't this wor
-const app = render(initialState, store.dispatch)
-main.appendChild(app)
+// var app = document.createElement('div') // ??? why doesn't this work
+// const app = render(initialState, store.dispatch)
+
 
 // setTimeout((err, res)=>{
 //   store.dispatch({type: 'RECEIVE_BEERS', payload: sampleBeers})
